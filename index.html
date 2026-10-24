@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wan AI Video Generator & Prompt Center</title>
+  <title>RATANA AI TOOL</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -42,11 +42,11 @@
     header {
       background-color: var(--bg-panel);
       border-bottom: 1px solid var(--border-color);
-      height: 56px;
+      min-height: 64px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 0 16px;
+      justify-content: center;
+      padding: 8px 16px;
       user-select: none;
       z-index: 10;
       flex-shrink: 0;
@@ -55,7 +55,15 @@
     .brand-section {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 12px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .brand-section > div:last-child {
+      display: grid;
+      gap: 2px;
     }
 
     .brand-logo {
@@ -86,13 +94,6 @@
       padding: 2px 8px;
       border-radius: 12px;
       font-weight: 500;
-    }
-
-    .toolbar-section {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px;
     }
 
     .btn {
@@ -127,18 +128,6 @@
 
     .btn-primary:hover {
       background-color: var(--primary-hover);
-    }
-
-    .select-mode {
-      background-color: var(--bg-surface);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      padding: 6px 10px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-family: inherit;
-      outline: none;
-      cursor: pointer;
     }
 
     /* Main Container */
@@ -190,7 +179,7 @@
       text-align: center;
     }
 
-    .account-note,
+    .signup-note,
     .copyright-note {
       max-width: 520px;
       color: var(--text-muted);
@@ -211,11 +200,7 @@
     }
 
     .autoacc-widget {
-      position: absolute;
-      right: 14px;
-      bottom: 14px;
-      z-index: 8;
-      width: min(380px, calc(100% - 28px));
+      width: min(380px, 100%);
       overflow: hidden;
       background: var(--bg-panel);
       border: 1px solid #64748b;
@@ -338,14 +323,6 @@
     }
 
     @media (max-width: 600px) {
-      .autoacc-widget {
-        right: 8px;
-        bottom: 8px;
-        width: min(350px, calc(100% - 16px));
-      }
-    }
-
-    @media (max-width: 600px) {
       .wan-section,
       .iframe-container {
         height: 90vh;
@@ -356,30 +333,13 @@
     @media (max-width: 760px) {
       header {
         height: auto;
-        min-height: 56px;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 10px;
+        min-height: 64px;
+        align-items: center;
         padding: 10px 12px;
       }
 
       .brand-section {
         min-width: 0;
-      }
-
-      .toolbar-section {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 6px;
-      }
-
-      .toolbar-section .btn {
-        min-width: 0;
-        min-height: 38px;
-        justify-content: center;
-        padding: 6px;
-        text-align: center;
-        white-space: normal;
       }
 
       .fallback-bar {
@@ -449,71 +409,6 @@
       font-weight: 600;
     }
 
-    /* Modal */
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background-color: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(4px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 50;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.2s ease;
-    }
-
-    .modal-backdrop.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .modal-card {
-      background-color: var(--bg-panel);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      width: 90%;
-      max-width: 520px;
-      padding: 24px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-
-    .modal-header h3 {
-      font-size: 17px;
-      font-weight: 600;
-    }
-
-    .modal-close {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-size: 20px;
-      cursor: pointer;
-    }
-
-    .modal-body {
-      font-size: 13.5px;
-      line-height: 1.6;
-      color: #cbd5e1;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .tip-box {
-      background-color: var(--bg-surface);
-      padding: 12px;
-      border-radius: 8px;
-      border-left: 3px solid var(--accent);
-    }
   </style>
 </head>
 <body>
@@ -523,88 +418,31 @@
     <div class="brand-section">
       <div class="brand-logo">W</div>
       <div>
-        <span class="brand-title">Wan Video AI & Prompt Hub</span>
-        <span class="brand-badge">kulkas2pintu/wan777</span>
+        <span class="brand-title">RATANA AI TOOL</span>
       </div>
-    </div>
-
-    <div class="toolbar-section">
-      <a href="https://docs.google.com/document/u/0/" target="_blank" rel="noopener noreferrer" class="btn" title="បើក Google Docs សម្រាប់កត់ត្រា Prompt">
-        <span>កត់ត្រា Prompt</span>
-      </a>
-
-      <!-- Clean & Reload Button -->
-      <button id="btnReload" class="btn" title="សម្អាតទិន្នន័យ និង Reload ដូចឧបករណ៍ថ្មី">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="23 4 23 10 17 10"></polyline>
-          <polyline points="1 20 1 14 7 14"></polyline>
-          <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-        </svg>
-        <span>Clean & Reload</span>
-      </button>
-
-      <button id="btnFullscreen" class="btn" title="ពង្រីកពេញអេក្រង់">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
-        </svg>
-        <span>Fullscreen</span>
-      </button>
-
-      <button id="btnHelp" class="btn" title="របៀបប្រើប្រាស់ & គន្លឹះ">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"></circle>
-          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-          <line x1="12" y1="17" x2="12.01" y2="17"></line>
-        </svg>
-        <span>គន្លឹះ</span>
-      </button>
-
-      <!-- Sign In & Sign Up Buttons with Auth Tracking -->
-      <a href="https://huggingface.co/login" target="_self" class="btn" onclick="handleAuthClick()" title="ចូលគណនី Hugging Face ផ្លូវការ">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
-          <polyline points="10 17 15 12 10 7"></polyline>
-          <line x1="15" y1="12" x2="3" y2="12"></line>
-        </svg>
-        <span>Sign In</span>
-      </a>
-
-      <a href="https://huggingface.co/join" target="_blank" rel="noopener noreferrer" class="btn" onclick="handleAuthClick()" title="បង្កើតគណនី Hugging Face ថ្មី">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-          <circle cx="8.5" cy="7.5" r="4"></circle>
-          <line x1="20" y1="8" x2="20" y2="14"></line>
-          <line x1="23" y1="11" x2="17" y2="11"></line>
-        </svg>
-        <span>Sign Up</span>
-      </a>
-
     </div>
   </header>
 
   <!-- Fallback Info Notice -->
   <div class="fallback-bar">
-    <span>💡 <strong>ព័ត៌មាន៖</strong> ការចុចប៊ូតុង <strong>Clean & Reload</strong> នឹងសម្អាតទិន្នន័យរក្សាទុកទាំងអស់ ធ្វើឱ្យកម្មវិធីស្អាតដូចទើបបើកលើ Device ថ្មី។</span>
+    <span>💡 <strong>សូមចំណាំ៖</strong> សូមរង់ចាំបន្តិច ប្រសិនបើកម្មវិធីកំពុងភ្ជាប់។</span>
     <span id="loadTimer">ដំណើរការ: 0s</span>
   </div>
 
   <!-- Main Area -->
   <main>
     <div class="content-split">
-      <div class="wan-section">
-        <div id="loadingOverlay" class="loading-overlay">
-          <div class="spinner"></div>
-          <div class="loading-text">កំពុងភ្ជាប់ទៅកាន់ Hugging Face Space (kulkas2pintu/wan777)...</div>
-        </div>
-
-        <div class="iframe-container">
-          <iframe
-            id="appFrame"
-            name="appFrame"
-            src="https://kulkas2pintu-wan777.hf.space"
-            allow="accelerometer; camera; encrypted-media; geolocation; gyroscope; microphone; midi; clipboard-read; clipboard-write;"
-          ></iframe>
-        </div>
+      <section class="app-actions" aria-label="កម្មវិធីបង្កើតរូបភាព និងវីដេអូ">
+        <a href="https://huggingface.co/spaces/kulkas2pintu/wan777" target="_blank" rel="noopener noreferrer" class="btn btn-primary app-action-link">
+          កម្មវិធី Image to Video
+        </a>
+        <a href="https://huggingface.co/spaces/fishpasters/uncensored-imageTOimage2Ref" target="_blank" rel="noopener noreferrer" class="btn app-action-link">
+          កម្មវិធី Prompt to Image
+        </a>
+        <a href="https://huggingface.co/join" target="_blank" rel="noopener noreferrer" class="btn app-action-link" onclick="handleAuthClick()" title="បង្កើតគណនី Hugging Face ថ្មី">
+          Sign Up
+        </a>
+        <p class="signup-note">បន្ទាប់ពីបង្កើតគណនីរួច សូមត្រឡប់មកកម្មវិធីនេះវិញ រួចចុចប៊ូតុងកម្មវិធីណាមួយដែលអ្នកចង់ប្រើ។ បើប្រើអស់ហើយ សូម Sign out ហើយបង្កើតគណនីម្ដងទៀត។</p>
 
         <section id="autoaccWidget" class="autoacc-widget" aria-label="AutoAcc">
           <div class="autoacc-widget-header">
@@ -645,50 +483,39 @@
             <button id="btnAutoaccGenerate" class="autoacc-generate" type="button">Refresh / បង្កើតទិន្នន័យថ្មី</button>
           </div>
         </section>
-      </div>
 
-      <section class="app-actions" aria-label="កម្មវិធីបង្កើតរូបភាព និងវីដេអូ">
-        <a href="https://huggingface.co/spaces/kulkas2pintu/wan777" target="_blank" rel="noopener noreferrer" class="btn btn-primary app-action-link">
-          កម្មវិធី Image to Video
-        </a>
-        <a href="https://huggingface.co/spaces/fishpasters/uncensored-imageTOimage2Ref" target="_blank" rel="noopener noreferrer" class="btn app-action-link">
-          Prompt to Image
-        </a>
-        <p class="account-note">សូមបង្កើតគណនី ដើម្បីអាចបង្កើតបានច្រើន</p>
         <p class="copyright-note">© រក្សាសិទ្ធិដោយ កែវ រតនា</p>
+        <a href="https://docs.google.com/document/u/0/" target="_blank" rel="noopener noreferrer" class="btn app-action-link" title="បើក Google Docs សម្រាប់កត់ត្រា Prompt">
+          កត់ត្រា Prompt
+        </a>
       </section>
+
+      <div class="wan-section">
+        <div id="loadingOverlay" class="loading-overlay">
+          <div class="spinner"></div>
+          <div class="loading-text">កំពុងភ្ជាប់ទៅកាន់ Hugging Face Space (kulkas2pintu/wan777)...</div>
+        </div>
+
+        <div class="iframe-container">
+          <iframe
+            id="appFrame"
+            name="appFrame"
+            src="https://kulkas2pintu-wan777.hf.space"
+            allow="accelerometer; camera; encrypted-media; geolocation; gyroscope; microphone; midi; clipboard-read; clipboard-write;"
+          ></iframe>
+        </div>
+
+      </div>
 
     </div>
   </main>
 
-  <!-- Help & Guide Modal -->
-  <div id="helpModal" class="modal-backdrop">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h3>💡 គន្លឹះ និងមុខងារ Clean & Reload</h3>
-        <button id="btnCloseModal" class="modal-close">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="tip-box">
-          <strong>🔄 មុខងារសម្អាតទិន្នន័យ (Device Reset):</strong>
-          <p>ពេលចុចប៊ូតុង <strong>Clean & Reload</strong> កម្មវិធីនឹងលុបចោលរាល់ LocalStorage, SessionStorage និង Cookies ព្រមទាំងបញ្ជាឱ្យ Iframe បង្កើត Session ថ្មីស្អាតល្អ 100% ដូចការចូលប្រើប្រាស់ដំបូងនៅលើឧបករណ៍ថ្មីដែរ។</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <script>
     const iframe = document.getElementById('appFrame');
     const loadingOverlay = document.getElementById('loadingOverlay');
-    const btnReload = document.getElementById('btnReload');
-    const btnFullscreen = document.getElementById('btnFullscreen');
     const autoaccWidget = document.getElementById('autoaccWidget');
     const btnAutoaccToggle = document.getElementById('btnAutoaccToggle');
     const loadTimer = document.getElementById('loadTimer');
-
-    const helpModal = document.getElementById('helpModal');
-    const btnHelp = document.getElementById('btnHelp');
-    const btnCloseModal = document.getElementById('btnCloseModal');
 
     const URLS = {
       direct: 'https://kulkas2pintu-wan777.hf.space'
@@ -848,44 +675,6 @@
       document.getElementById('btnAutoaccGenerate').addEventListener('click', generateAll);
       generateAll();
     })();
-
-    // Clean & Hard Reload Function
-    btnReload.addEventListener('click', () => {
-      try {
-        localStorage.clear();
-        sessionStorage.clear();
-        document.cookie.split(";").forEach((c) => {
-          document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-        });
-      } catch (e) {
-        console.warn("Clear storage error:", e);
-      }
-      window.location.reload(true);
-    });
-
-    btnFullscreen.addEventListener('click', () => {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(err => {
-          console.warn("Fullscreen request error:", err);
-        });
-      } else {
-        document.exitFullscreen();
-      }
-    });
-
-    btnHelp.addEventListener('click', () => {
-      helpModal.classList.add('active');
-    });
-
-    btnCloseModal.addEventListener('click', () => {
-      helpModal.classList.remove('active');
-    });
-
-    helpModal.addEventListener('click', (e) => {
-      if (e.target === helpModal) {
-        helpModal.classList.remove('active');
-      }
-    });
 
     startTimer();
 
