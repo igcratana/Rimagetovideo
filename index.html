@@ -342,15 +342,6 @@
         min-width: 0;
       }
 
-      .fallback-bar {
-        flex-wrap: wrap;
-        gap: 6px;
-        padding: 8px 12px;
-      }
-
-      .fallback-bar > span:first-child {
-        flex-basis: 100%;
-      }
     }
 
     /* Loading Overlay */
@@ -391,22 +382,70 @@
       color: var(--text-muted);
     }
 
-    .fallback-bar {
-      background-color: #1e1b4b;
-      border-bottom: 1px solid #3730a3;
-      padding: 6px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 12px;
-      color: #c7d2fe;
-      flex-shrink: 0;
+    .support-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: grid;
+      place-items: center;
+      padding: 16px;
+      background: rgba(5, 10, 20, 0.78);
+      backdrop-filter: blur(4px);
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
     }
 
-    .fallback-bar a {
-      color: #38bdf8;
-      text-decoration: underline;
-      font-weight: 600;
+    .support-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .support-card {
+      position: relative;
+      width: min(420px, 100%);
+      max-height: calc(100vh - 32px);
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 18px;
+      border-radius: 10px;
+      background: #fff;
+      color: #1f2937;
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+      text-align: center;
+    }
+
+    .support-message {
+      max-width: 360px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .support-qr {
+      display: block;
+      width: auto;
+      max-width: 100%;
+      max-height: min(58vh, 560px);
+      object-fit: contain;
+    }
+
+    .support-close {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 32px;
+      height: 32px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(15, 23, 42, 0.75);
+      color: #fff;
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
     }
 
   </style>
@@ -423,10 +462,20 @@
     </div>
   </header>
 
-  <!-- Fallback Info Notice -->
-  <div class="fallback-bar">
-    <span>💡 <strong>សូមចំណាំ៖</strong> សូមរង់ចាំបន្តិច ប្រសិនបើកម្មវិធីកំពុងភ្ជាប់។</span>
-    <span id="loadTimer">ដំណើរការ: 0s</span>
+  <div id="supportOverlay" class="support-overlay" role="dialog" aria-modal="true" aria-labelledby="supportMessage">
+    <div class="support-card">
+      <button id="btnCloseSupport" class="support-close" type="button" aria-label="បិទ">&times;</button>
+      <p id="supportMessage" class="support-message">សូមជួយគាំទ្រស្នាដៃរបស់ខ្ញុំតាមរយៈការឧបត្ថម្ភជាថវិកាតាមទឹកចិត្តរបស់អ្នក សូមអរគុណ។</p>
+      <img class="support-qr" src="qr.png" alt="QR code សម្រាប់ស្កេនឧបត្ថម្ភ">
+    </div>
+  </div>
+
+  <div id="telegramOverlay" class="support-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="telegramMessage">
+    <div class="support-card">
+      <button id="btnCloseTelegram" class="support-close" type="button" aria-label="បិទ">&times;</button>
+      <p id="telegramMessage" class="support-message">ដើម្បីកុំឲ្យមានការលោតផ្ទាំងច្រើនដង សូមទាក់ទងមក Telegram ដើម្បីទិញសិទ្ធិប្រើប្រាស់ 2$ ប្រើបានរហូត។</p>
+      <img class="support-qr" src="tg.png" alt="QR code Telegram សម្រាប់ទាក់ទង @RATANAIGC">
+    </div>
   </div>
 
   <!-- Main Area -->
@@ -442,7 +491,7 @@
         <a href="https://huggingface.co/join" target="_blank" rel="noopener noreferrer" class="btn app-action-link" onclick="handleAuthClick()" title="បង្កើតគណនី Hugging Face ថ្មី">
           Sign Up
         </a>
-        <p class="signup-note">បន្ទាប់ពីបង្កើតគណនីរួច សូមត្រឡប់មកកម្មវិធីនេះវិញ រួចចុចប៊ូតុងកម្មវិធីណាមួយដែលអ្នកចង់ប្រើ។ បើប្រើអស់ហើយ សូម Sign out ហើយបង្កើតគណនីម្ដងទៀត។</p>
+        <p class="signup-note">បន្ទាប់ពីបង្កើតគណនីរួច សូមត្រឡប់មកកម្មវិធីនេះវិញ រួចចុចប៊ូតុងកម្មវិធីណាមួយដែលអ្នកចង់ប្រើ។ បើប្រើដល់កម្រិតកំណត់ ហើយមិនអាចប្រើបន្តបាន សូមពិនិត្យកម្រិតប្រើប្រាស់ ឬរង់ចាំឲ្យកំណត់ឡើងវិញ។ បើមិនដូច្នោះទេ សូម Sign out ហើយ Sign in ជាថ្មី។</p>
 
         <section id="autoaccWidget" class="autoacc-widget" aria-label="AutoAcc">
           <div class="autoacc-widget-header">
@@ -515,38 +564,24 @@
     const loadingOverlay = document.getElementById('loadingOverlay');
     const autoaccWidget = document.getElementById('autoaccWidget');
     const btnAutoaccToggle = document.getElementById('btnAutoaccToggle');
-    const loadTimer = document.getElementById('loadTimer');
-
+    const supportOverlay = document.getElementById('supportOverlay');
+    const btnCloseSupport = document.getElementById('btnCloseSupport');
+    const telegramOverlay = document.getElementById('telegramOverlay');
+    const btnCloseTelegram = document.getElementById('btnCloseTelegram');
     const URLS = {
       direct: 'https://kulkas2pintu-wan777.hf.space'
     };
-
-    let timerInterval = null;
-    let secondsElapsed = 0;
-
-    function startTimer() {
-      clearInterval(timerInterval);
-      secondsElapsed = 0;
-      loadTimer.textContent = 'ដំណើរការ: 0s';
-      timerInterval = setInterval(() => {
-        secondsElapsed++;
-        loadTimer.textContent = `ដំណើរការ: ${secondsElapsed}s`;
-      }, 1000);
-    }
-
-    function stopTimer() {
-      clearInterval(timerInterval);
-    }
+    let supportPopupTimeout = null;
+    let telegramPopupTimeout = null;
+    let showTelegramNextRefresh = false;
 
     function loadFrame(url) {
       loadingOverlay.classList.remove('hidden');
-      startTimer();
       iframe.src = url;
     }
 
     iframe.addEventListener('load', () => {
       loadingOverlay.classList.add('hidden');
-      stopTimer();
     });
 
     function handleAuthClick() {
@@ -562,6 +597,42 @@
 
     window.addEventListener('pageshow', refreshAfterAuth);
     window.addEventListener('focus', refreshAfterAuth);
+
+    function closeSupportPopup() {
+      clearTimeout(supportPopupTimeout);
+      supportPopupTimeout = null;
+      supportOverlay.classList.add('hidden');
+    }
+
+    btnCloseSupport.addEventListener('click', closeSupportPopup);
+    supportPopupTimeout = window.setTimeout(closeSupportPopup, 10000);
+
+    function showSupportPopup() {
+      clearTimeout(telegramPopupTimeout);
+      telegramPopupTimeout = null;
+      telegramOverlay.classList.add('hidden');
+      clearTimeout(supportPopupTimeout);
+      supportOverlay.classList.remove('hidden');
+      supportPopupTimeout = window.setTimeout(closeSupportPopup, 10000);
+    }
+
+    function showTelegramPopup() {
+      clearTimeout(supportPopupTimeout);
+      supportPopupTimeout = null;
+      supportOverlay.classList.add('hidden');
+      clearTimeout(telegramPopupTimeout);
+      telegramOverlay.classList.remove('hidden');
+      telegramPopupTimeout = window.setTimeout(() => {
+        telegramOverlay.classList.add('hidden');
+        telegramPopupTimeout = null;
+      }, 10000);
+    }
+
+    btnCloseTelegram.addEventListener('click', () => {
+      clearTimeout(telegramPopupTimeout);
+      telegramPopupTimeout = null;
+      telegramOverlay.classList.add('hidden');
+    });
 
     btnAutoaccToggle.addEventListener('click', () => {
       const isCollapsed = autoaccWidget.classList.toggle('collapsed');
@@ -672,11 +743,17 @@
       document.querySelectorAll('.autoacc-field-group').forEach((fieldGroup) => {
         fieldGroup.addEventListener('click', () => copyField(fieldGroup));
       });
-      document.getElementById('btnAutoaccGenerate').addEventListener('click', generateAll);
+      document.getElementById('btnAutoaccGenerate').addEventListener('click', () => {
+        generateAll();
+        if (showTelegramNextRefresh) {
+          showTelegramPopup();
+        } else {
+          showSupportPopup();
+        }
+        showTelegramNextRefresh = !showTelegramNextRefresh;
+      });
       generateAll();
     })();
-
-    startTimer();
 
     setTimeout(() => {
       if (!loadingOverlay.classList.contains('hidden')) {
