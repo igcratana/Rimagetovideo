@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wan AI Video Generator & Prompt Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --bg-panel: #1e293b;
+      --bg-surface: #334155;
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --accent: #06b6d4;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: #334155;
+      --success: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Kantumruy Pro', 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    /* Header Bar */
+    header {
+      background-color: var(--bg-panel);
+      border-bottom: 1px solid var(--border-color);
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      user-select: none;
+      z-index: 10;
+      flex-shrink: 0;
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #6366f1, #06b6d4);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: white;
+      font-size: 18px;
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+    }
+
+    .brand-title {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+    }
+
+    .brand-badge {
+      background-color: rgba(99, 102, 241, 0.15);
+      color: #818cf8;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-weight: 500;
+    }
+
+    .toolbar-section {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+      color: var(--text-main);
+      background-color: var(--bg-surface);
+      text-decoration: none;
+      font-family: inherit;
+    }
+
+    .btn:hover {
+      background-color: #475569;
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .select-mode {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-family: inherit;
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* Main Container */
+    main {
+      flex: 0 0 auto;
+      position: relative;
+      background-color: #0b0f19;
+      display: flex;
+      flex-direction: column;
+      overflow: visible;
+    }
+
+    .content-split {
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      overflow: visible;
+    }
+
+    .wan-section {
+      flex: 0 0 auto;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-height: 78vh;
+    }
+
+    .iframe-container {
+      width: 100%;
+      height: 100vh;
+      min-height: 600px;
+      position: relative;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    .autoacc-widget {
+      position: absolute;
+      right: 14px;
+      bottom: 14px;
+      z-index: 8;
+      width: min(380px, calc(100% - 28px));
+      overflow: hidden;
+      background: var(--bg-panel);
+      border: 1px solid #64748b;
+      border-radius: 8px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+    }
+
+    .autoacc-widget-header {
+      min-height: 38px;
+      padding: 5px 8px 5px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text-main);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .autoacc-toggle {
+      width: 28px;
+      height: 27px;
+      border: 1px solid var(--border-color);
+      border-radius: 5px;
+      background: var(--bg-surface);
+      color: var(--text-main);
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .autoacc-content {
+      height: min(390px, 52vh);
+      overflow: auto;
+      padding: 12px 14px;
+      background: #f4f4f9;
+      color: #333;
+      font-family: Arial, sans-serif;
+    }
+
+    .autoacc-content h2 {
+      margin-bottom: 10px;
+      color: #333;
+      font-size: 17px;
+      text-align: center;
+    }
+
+    .autoacc-field-group {
+      margin-bottom: 8px;
+    }
+
+    .autoacc-field-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .autoacc-input-group {
+      display: flex;
+    }
+
+    .autoacc-input-group input {
+      flex: 1;
+      min-width: 0;
+      padding: 7px;
+      border: 1px solid #ccc;
+      border-radius: 5px 0 0 5px;
+      outline: none;
+      background: #f9f9f9;
+      color: #333;
+      font: inherit;
+      font-size: 12px;
+    }
+
+    .autoacc-field-group.copied input {
+      border-color: #28a745;
+      background: #e8f5e9;
+      color: #166534;
+    }
+
+    .autoacc-copy {
+      min-width: 68px;
+      padding: 7px 8px;
+      border: 0;
+      border-radius: 0 5px 5px 0;
+      background: #007bff;
+      color: white;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .autoacc-generate {
+      width: 100%;
+      margin-top: 4px;
+      padding: 9px;
+      border: 0;
+      border-radius: 5px;
+      background: #28a745;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .autoacc-content button:hover {
+      opacity: 0.9;
+    }
+
+    .autoacc-widget.collapsed .autoacc-content {
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      .autoacc-widget {
+        right: 8px;
+        bottom: 8px;
+        width: min(350px, calc(100% - 16px));
+      }
+    }
+
+    @media (max-width: 600px) {
+      .wan-section,
+      .iframe-container {
+        height: 90vh;
+        min-height: 500px;
+      }
+    }
+
+    /* Loading Overlay */
+    .loading-overlay {
+      position: absolute;
+      inset: 0;
+      background-color: var(--bg-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      z-index: 5;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .loading-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .spinner {
+      width: 44px;
+      height: 44px;
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      border-top-color: var(--accent);
+      animation: spin 0.9s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .fallback-bar {
+      background-color: #1e1b4b;
+      border-bottom: 1px solid #3730a3;
+      padding: 6px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #c7d2fe;
+      flex-shrink: 0;
+    }
+
+    .fallback-bar a {
+      color: #38bdf8;
+      text-decoration: underline;
+      font-weight: 600;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s ease;
+    }
+
+    .modal-backdrop.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-card {
+      background-color: var(--bg-panel);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      width: 90%;
+      max-width: 520px;
+      padding: 24px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .modal-header h3 {
+      font-size: 17px;
+      font-weight: 600;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .modal-body {
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: #cbd5e1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tip-box {
+      background-color: var(--bg-surface);
+      padding: 12px;
+      border-radius: 8px;
+      border-left: 3px solid var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="brand-section">
+      <div class="brand-logo">W</div>
+      <div>
+        <span class="brand-title">Wan Video AI & Prompt Hub</span>
+        <span class="brand-badge">kulkas2pintu/wan777</span>
+      </div>
+    </div>
+
+    <div class="toolbar-section">
+      <a href="https://docs.google.com/document/u/0/" target="_blank" rel="noopener noreferrer" class="btn" title="បើក Google Docs សម្រាប់កត់ត្រា Prompt">
+        <span>កត់ត្រា Prompt</span>
+      </a>
+
+      <!-- Clean & Reload Button -->
+      <button id="btnReload" class="btn" title="សម្អាតទិន្នន័យ និង Reload ដូចឧបករណ៍ថ្មី">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="23 4 23 10 17 10"></polyline>
+          <polyline points="1 20 1 14 7 14"></polyline>
+          <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+        </svg>
+        <span>Clean & Reload</span>
+      </button>
+
+      <button id="btnFullscreen" class="btn" title="ពង្រីកពេញអេក្រង់">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+        </svg>
+        <span>Fullscreen</span>
+      </button>
+
+      <button id="btnHelp" class="btn" title="របៀបប្រើប្រាស់ & គន្លឹះ">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+        <span>គន្លឹះ</span>
+      </button>
+
+      <!-- Sign In & Sign Up Buttons with Auth Tracking -->
+      <a href="https://huggingface.co/login" target="_self" class="btn" onclick="handleAuthClick()" title="ចូលគណនី Hugging Face ផ្លូវការ">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+          <polyline points="10 17 15 12 10 7"></polyline>
+          <line x1="15" y1="12" x2="3" y2="12"></line>
+        </svg>
+        <span>Sign In</span>
+      </a>
+
+      <a href="https://huggingface.co/join" target="_blank" rel="noopener noreferrer" class="btn" onclick="handleAuthClick()" title="បង្កើតគណនី Hugging Face ថ្មី">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="8.5" cy="7.5" r="4"></circle>
+          <line x1="20" y1="8" x2="20" y2="14"></line>
+          <line x1="23" y1="11" x2="17" y2="11"></line>
+        </svg>
+        <span>Sign Up</span>
+      </a>
+
+      <a id="btnExternal" href="https://huggingface.co/spaces/kulkas2pintu/wan777" target="_blank" rel="noopener noreferrer" class="btn btn-primary" title="បើកកម្មវិធីផ្ទាល់លើផ្ទាំងថ្មី">
+        <span>បើកកម្មវិធីផ្ទាល់</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Fallback Info Notice -->
+  <div class="fallback-bar">
+    <span>💡 <strong>ព័ត៌មាន៖</strong> ការចុចប៊ូតុង <strong>Clean & Reload</strong> នឹងសម្អាតទិន្នន័យរក្សាទុកទាំងអស់ ធ្វើឱ្យកម្មវិធីស្អាតដូចទើបបើកលើ Device ថ្មី។</span>
+    <span id="loadTimer">ដំណើរការ: 0s</span>
+  </div>
+
+  <!-- Main Area -->
+  <main>
+    <div class="content-split">
+      <div class="wan-section">
+        <div id="loadingOverlay" class="loading-overlay">
+          <div class="spinner"></div>
+          <div class="loading-text">កំពុងភ្ជាប់ទៅកាន់ Hugging Face Space (kulkas2pintu/wan777)...</div>
+        </div>
+
+        <div class="iframe-container">
+          <iframe
+            id="appFrame"
+            name="appFrame"
+            src="https://kulkas2pintu-wan777.hf.space"
+            allow="accelerometer; camera; encrypted-media; geolocation; gyroscope; microphone; midi; clipboard-read; clipboard-write;"
+          ></iframe>
+        </div>
+
+        <section id="autoaccWidget" class="autoacc-widget" aria-label="AutoAcc">
+          <div class="autoacc-widget-header">
+            <span>AutoAcc · បង្កើតព័ត៌មានគណនី</span>
+            <button id="btnAutoaccToggle" class="autoacc-toggle" type="button" aria-label="បង្រួម AutoAcc" aria-expanded="true">−</button>
+          </div>
+          <div class="autoacc-content">
+            <h2>បង្កើត គណនី</h2>
+            <div class="autoacc-field-group">
+              <label for="autoaccEmailInput">អាសយដ្ឋាន Gmail:</label>
+              <div class="autoacc-input-group">
+                <input type="text" id="autoaccEmailInput" readonly placeholder="Gmail ដកស្រង់">
+                <button class="autoacc-copy" type="button">Copy</button>
+              </div>
+            </div>
+            <div class="autoacc-field-group">
+              <label for="autoaccPasswordInput">ពាក្យសម្ងាត់ (Password):</label>
+              <div class="autoacc-input-group">
+                <input type="text" id="autoaccPasswordInput" readonly placeholder="Password ដកស្រង់">
+                <button class="autoacc-copy" type="button">Copy</button>
+              </div>
+            </div>
+            <div class="autoacc-field-group">
+              <label for="autoaccFirstNameInput">Firstname:</label>
+              <div class="autoacc-input-group">
+                <input type="text" id="autoaccFirstNameInput" readonly placeholder="Firstname ដកស្រង់">
+                <button class="autoacc-copy" type="button">Copy</button>
+              </div>
+            </div>
+            <div class="autoacc-field-group">
+              <label for="autoaccNameInput">ឈ្មោះ (Name):</label>
+              <div class="autoacc-input-group">
+                <input type="text" id="autoaccNameInput" readonly placeholder="ឈ្មោះដកស្រង់">
+                <button class="autoacc-copy" type="button">Copy</button>
+              </div>
+            </div>
+            <button id="btnAutoaccGenerate" class="autoacc-generate" type="button">Refresh / បង្កើតទិន្នន័យថ្មី</button>
+          </div>
+        </section>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Help & Guide Modal -->
+  <div id="helpModal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>💡 គន្លឹះ និងមុខងារ Clean & Reload</h3>
+        <button id="btnCloseModal" class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="tip-box">
+          <strong>🔄 មុខងារសម្អាតទិន្នន័យ (Device Reset):</strong>
+          <p>ពេលចុចប៊ូតុង <strong>Clean & Reload</strong> កម្មវិធីនឹងលុបចោលរាល់ LocalStorage, SessionStorage និង Cookies ព្រមទាំងបញ្ជាឱ្យ Iframe បង្កើត Session ថ្មីស្អាតល្អ 100% ដូចការចូលប្រើប្រាស់ដំបូងនៅលើឧបករណ៍ថ្មីដែរ។</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const iframe = document.getElementById('appFrame');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const btnReload = document.getElementById('btnReload');
+    const btnFullscreen = document.getElementById('btnFullscreen');
+    const autoaccWidget = document.getElementById('autoaccWidget');
+    const btnAutoaccToggle = document.getElementById('btnAutoaccToggle');
+    const loadTimer = document.getElementById('loadTimer');
+
+    const helpModal = document.getElementById('helpModal');
+    const btnHelp = document.getElementById('btnHelp');
+    const btnCloseModal = document.getElementById('btnCloseModal');
+
+    const URLS = {
+      direct: 'https://kulkas2pintu-wan777.hf.space'
+    };
+
+    let timerInterval = null;
+    let secondsElapsed = 0;
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      secondsElapsed = 0;
+      loadTimer.textContent = 'ដំណើរការ: 0s';
+      timerInterval = setInterval(() => {
+        secondsElapsed++;
+        loadTimer.textContent = `ដំណើរការ: ${secondsElapsed}s`;
+      }, 1000);
+    }
+
+    function stopTimer() {
+      clearInterval(timerInterval);
+    }
+
+    function loadFrame(url) {
+      loadingOverlay.classList.remove('hidden');
+      startTimer();
+      iframe.src = url;
+    }
+
+    iframe.addEventListener('load', () => {
+      loadingOverlay.classList.add('hidden');
+      stopTimer();
+    });
+
+    function handleAuthClick() {
+      sessionStorage.setItem('pending_auth', 'true');
+    }
+
+    function refreshAfterAuth() {
+      if (sessionStorage.getItem('pending_auth') === 'true') {
+        sessionStorage.removeItem('pending_auth');
+        loadFrame(URLS.direct);
+      }
+    }
+
+    window.addEventListener('pageshow', refreshAfterAuth);
+    window.addEventListener('focus', refreshAfterAuth);
+
+    btnAutoaccToggle.addEventListener('click', () => {
+      const isCollapsed = autoaccWidget.classList.toggle('collapsed');
+      btnAutoaccToggle.textContent = isCollapsed ? '+' : '−';
+      btnAutoaccToggle.setAttribute('aria-label', isCollapsed ? 'បើក AutoAcc' : 'បង្រួម AutoAcc');
+      btnAutoaccToggle.setAttribute('aria-expanded', String(!isCollapsed));
+    });
+
+    (() => {
+      const firstNames = [
+        'Sok', 'Chan', 'Vannak', 'Bora', 'Dara', 'Serey', 'Narith', 'Sophy', 'Kosal', 'Bung',
+        'Rithy', 'Piseth', 'Arun', 'Vatanak', 'Sovan', 'Chhay', 'Makara', 'Nhim', 'Khemra', 'Visal',
+        'Kravann', 'Thyda', 'Bopha', 'Sreypov', 'Kolab', 'Channary', 'Maly', 'Neary', 'Kunthea', 'Rachana'
+      ];
+      const lastNames = [
+        'Khem', 'Meng', 'Rith', 'Sovann', 'Chea', 'Phan', 'Heng', 'Long', 'Vibol', 'Rath',
+        'Ung', 'Seng', 'Chhay', 'Keo', 'Meas', 'Porn', 'Morn', 'Nguon', 'Thorn', 'Bun'
+      ];
+      const usedFirstNames = new Set();
+      const usedFullNames = new Set();
+      const firstNameInput = document.getElementById('autoaccFirstNameInput');
+      const nameInput = document.getElementById('autoaccNameInput');
+      const emailInput = document.getElementById('autoaccEmailInput');
+      const passwordInput = document.getElementById('autoaccPasswordInput');
+
+      function generatePassword(length = 12) {
+        const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const lowercase = 'abcdefghijklmnopqrstuvwxyz';
+        const numbers = '0123456789';
+        const allChars = uppercase + lowercase + numbers;
+        let password = '';
+
+        password += uppercase[Math.floor(Math.random() * uppercase.length)];
+        password += lowercase[Math.floor(Math.random() * lowercase.length)];
+        password += numbers[Math.floor(Math.random() * numbers.length)];
+
+        for (let i = 3; i < length; i++) {
+          password += allChars[Math.floor(Math.random() * allChars.length)];
+        }
+
+        return password.split('').sort(() => 0.5 - Math.random()).join('');
+      }
+
+      function generateNameAndEmail() {
+        const firstNameCount = firstNames.length * 1000;
+        const fullNameCount = firstNameCount * lastNames.length;
+
+        if (usedFullNames.size >= fullNameCount) {
+          usedFullNames.clear();
+          usedFirstNames.clear();
+        } else if (usedFirstNames.size >= firstNameCount) {
+          usedFirstNames.clear();
+        }
+
+        let firstName;
+        let lastName;
+        let fullName;
+        do {
+          const baseFirstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+          const suffix = String(Math.floor(Math.random() * 1000)).padStart(3, '0');
+          firstName = `${baseFirstName}${suffix}`;
+          lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+          fullName = `${firstName} ${lastName}`;
+        } while (usedFirstNames.has(firstName) || usedFullNames.has(fullName));
+
+        usedFirstNames.add(firstName);
+        usedFullNames.add(fullName);
+
+        return {
+          firstName,
+          fullName,
+          email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}@gmail.com`
+        };
+      }
+
+      function generateAll() {
+        const account = generateNameAndEmail();
+        firstNameInput.value = account.firstName;
+        nameInput.value = account.fullName;
+        emailInput.value = account.email;
+        passwordInput.value = generatePassword();
+      }
+
+      async function copyField(fieldGroup) {
+        const input = fieldGroup.querySelector('input');
+        if (!input.value) return;
+
+        try {
+          await navigator.clipboard.writeText(input.value);
+        } catch (error) {
+          input.select();
+          if (!document.execCommand('copy')) return;
+          input.setSelectionRange(0, 0);
+        }
+
+        const copyButton = fieldGroup.querySelector('.autoacc-copy');
+        fieldGroup.classList.add('copied');
+        copyButton.textContent = '✔ បានចម្លង';
+        copyButton.style.backgroundColor = '#28a745';
+        clearTimeout(fieldGroup.copyTimeout);
+        fieldGroup.copyTimeout = setTimeout(() => {
+          fieldGroup.classList.remove('copied');
+          copyButton.textContent = 'Copy';
+          copyButton.style.backgroundColor = '';
+        }, 1800);
+      }
+
+      document.querySelectorAll('.autoacc-field-group').forEach((fieldGroup) => {
+        fieldGroup.addEventListener('click', () => copyField(fieldGroup));
+      });
+      document.getElementById('btnAutoaccGenerate').addEventListener('click', generateAll);
+      generateAll();
+    })();
+
+    // Clean & Hard Reload Function
+    btnReload.addEventListener('click', () => {
+      try {
+        localStorage.clear();
+        sessionStorage.clear();
+        document.cookie.split(";").forEach((c) => {
+          document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+        });
+      } catch (e) {
+        console.warn("Clear storage error:", e);
+      }
+      window.location.reload(true);
+    });
+
+    btnFullscreen.addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.warn("Fullscreen request error:", err);
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    });
+
+    btnHelp.addEventListener('click', () => {
+      helpModal.classList.add('active');
+    });
+
+    btnCloseModal.addEventListener('click', () => {
+      helpModal.classList.remove('active');
+    });
+
+    helpModal.addEventListener('click', (e) => {
+      if (e.target === helpModal) {
+        helpModal.classList.remove('active');
+      }
+    });
+
+    startTimer();
+
+    setTimeout(() => {
+      if (!loadingOverlay.classList.contains('hidden')) {
+        loadingOverlay.classList.add('hidden');
+      }
+    }, 12000);
+  </script>
+</body>
+</html>
